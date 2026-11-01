@@ -1,0 +1,13 @@
+{
+  "7656289635": {
+    "whatsapps": [
+      "2348148948848"
+    ],
+    "botname": "Yamii",
+    "greetDm": "Hi, this is an AI assistant.",
+    "greetGroup": "Hi everyone, I'm an AI assistant.",
+    "autoreplyStrangers": "on",
+    "autoreplyGroups": "on",
+    "suspended": false
+  }
+}

@@ -1,0 +1,1 @@
+module.exports = { name: "ytsearch", aliases: ["yt"], category: "search", description: "YouTube search", usage: ".yt <query>", permission: "user", async run(ctx) { if(!ctx.args.length) return "query?"; return `https://www.youtube.com/results?search_query=${encodeURIComponent(ctx.args.join(" "))}`; } };

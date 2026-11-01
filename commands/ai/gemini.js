@@ -1,0 +1,1 @@
+module.exports = { name: "gemini", category: "ai", description: "Chat with Gemini", usage: ".gemini <text>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .gemini hello"; return await ctx.ai.ask(ctx.args.join(" "), "You are Google Gemini, a highly logical AI. Answer clearly."); } };

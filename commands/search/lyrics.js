@@ -1,0 +1,1 @@
+module.exports = { name: "lyrics", category: "search", description: "Search lyrics", usage: ".lyrics <song>", permission: "user", async run(ctx) { return `https://genius.com/search?q=${encodeURIComponent(ctx.args.join(" "))}`; } };

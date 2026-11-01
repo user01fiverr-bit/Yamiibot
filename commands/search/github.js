@@ -1,0 +1,1 @@
+module.exports = { name: "github", aliases: ["gh"], category: "search", description: "GitHub search", usage: ".github <q>", permission: "user", async run(ctx) { return `https://github.com/search?q=${encodeURIComponent(ctx.args.join(" "))}`; } };

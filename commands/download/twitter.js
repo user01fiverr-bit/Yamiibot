@@ -1,0 +1,1 @@
+module.exports = { name: "twitter", aliases: ["x"], category: "download", description: "X video", usage: ".twitter <url>", permission: "user", async run() { return "❌ Cloud only. Works on Oracle."; } };

@@ -1,0 +1,1 @@
+module.exports = { name: "imdb", category: "search", description: "IMDb search", usage: ".imdb <title>", permission: "user", async run(ctx) { return `https://www.imdb.com/find/?q=${encodeURIComponent(ctx.args.join(" "))}`; } };

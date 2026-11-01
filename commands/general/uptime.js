@@ -1,0 +1,1 @@
+module.exports = { name: "uptime", category: "general", description: "Bot uptime", usage: ".uptime", permission: "user", async run() { const up = process.uptime(); return `Uptime: ${Math.floor(up/3600)}h ${Math.floor((up%3600)/60)}m`; } };

@@ -1,0 +1,1 @@
+module.exports = { name: "thunder", category: "textmaker", description: "Fancy thunder text", usage: ".thunder <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

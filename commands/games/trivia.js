@@ -1,0 +1,1 @@
+module.exports = { name: "trivia", category: "games", description: "Trivia", usage: ".trivia", permission: "user", async run() { return "🧠 What is the capital of Japan?\nA) Seoul\nB) Tokyo\nC) Beijing\n\nReply with A, B, or C."; } };

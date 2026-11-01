@@ -1,0 +1,1 @@
+module.exports = { name: "ssl", category: "osint", description: "SSL Certificate", usage: ".ssl domain.com", permission: "user", async run(ctx) { try { const r = await fetch(`https://crt.sh/?q=${ctx.args[0]}&output=json`); const j = await r.json(); return `🔒 Found ${j.length} certificates for ${ctx.args[0]}.`; } catch(e) { return "Error"; } } };

@@ -1,0 +1,2 @@
+const eco = require("../../lib/economy");
+module.exports = { name: "daily", category: "economy", description: "Daily reward", usage: ".daily", permission: "user", async run(ctx) { const u=eco.getUser(ctx.ownerWa); const now=Date.now(); if(now-u.lastDaily<86400000) return "⏳ Wait 24h for daily."; u.wallet+=1000; u.lastDaily=now; eco.saveUser(ctx.ownerWa,u); return "💰 +1000 coins daily claimed!"; } };

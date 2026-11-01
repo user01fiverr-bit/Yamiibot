@@ -1,0 +1,1 @@
+module.exports = { name: "emoji_recipe", category: "ai", description: "AI generator: emoji_recipe", usage: ".emoji_recipe <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .emoji_recipe <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a emoji_recipe based on: " + ctx.args.join(" ")); } };

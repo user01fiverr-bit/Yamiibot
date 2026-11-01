@@ -1,0 +1,1 @@
+module.exports = { name: "matrix", category: "textmaker", description: "Fancy matrix text", usage: ".matrix <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

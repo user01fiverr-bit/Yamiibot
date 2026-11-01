@@ -1,0 +1,2 @@
+const eco = require("../../lib/economy");
+module.exports = { name: "bankrob", category: "economy", description: "Rob the bank (Extremely risky)", usage: ".bankrob", permission: "user", async run(ctx) { const u = eco.getUser(ctx.ownerWa); if(Math.random() < 0.1) { u.wallet += 10000; eco.saveUser(ctx.ownerWa, u); return "🏦 *HEIST SUCCESS!* You stole 10,000 coins!"; } else { u.wallet = Math.max(0, u.wallet - 2000); eco.saveUser(ctx.ownerWa, u); return "🚨 *CAUGHT!* You lost 2,000 coins in fines."; } } };

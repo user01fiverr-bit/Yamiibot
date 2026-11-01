@@ -1,0 +1,1 @@
+module.exports = { name: "translate", category: "ai", description: "AI generator: translate", usage: ".translate <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .translate <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a translate based on: " + ctx.args.join(" ")); } };

@@ -1,0 +1,1 @@
+module.exports = { name: "purple", category: "textmaker", description: "Fancy purple text", usage: ".purple <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

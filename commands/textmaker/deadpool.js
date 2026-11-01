@@ -1,0 +1,1 @@
+module.exports = { name: "deadpool", category: "textmaker", description: "Fancy deadpool text", usage: ".deadpool <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

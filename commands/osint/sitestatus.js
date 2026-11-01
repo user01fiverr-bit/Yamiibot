@@ -1,0 +1,1 @@
+module.exports = { name: "sitestatus", category: "osint", description: "Is site up?", usage: ".sitestatus google.com", permission: "user", async run(ctx) { let url=ctx.args[0]; if(!url.startsWith("http")) url="https://"+url; try{ const r=await fetch(url); return r.ok ? `🟢 UP (Status: ${r.status})` : `🔴 DOWN (Status: ${r.status})`; }catch(e){ return `🔴 DOWN (Error)`; } } };

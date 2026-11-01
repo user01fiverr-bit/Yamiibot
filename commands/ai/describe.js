@@ -1,0 +1,1 @@
+module.exports = { name: "describe", category: "ai", description: "Describe an image URL", usage: ".describe <url>", permission: "user", async run(ctx) { return await ctx.ai.ask("Describe this image URL: " + ctx.args[0]); } };

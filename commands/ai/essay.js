@@ -1,0 +1,1 @@
+module.exports = { name: "essay", category: "ai", description: "Write an essay", usage: ".essay <topic>", permission: "user", async run(ctx) { return await ctx.ai.ask("Write a short essay on: " + ctx.args.join(" ")); } };

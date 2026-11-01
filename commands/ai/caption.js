@@ -1,0 +1,1 @@
+module.exports = { name: "caption", category: "ai", description: "AI generator: caption", usage: ".caption <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .caption <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a caption based on: " + ctx.args.join(" ")); } };

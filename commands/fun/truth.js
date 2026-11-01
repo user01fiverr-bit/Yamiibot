@@ -1,0 +1,1 @@
+module.exports = { name: "truth", category: "fun", description: "Truth question", usage: ".truth", permission: "user", async run() { const q = ["What is your biggest fear?", "Who was your first crush?", "What is the biggest lie you've ever told?"]; return `🫣 Truth: ${q[Math.floor(Math.random()*q.length)]}`; } };

@@ -1,0 +1,1 @@
+module.exports = { name: "love", category: "fun", description: "Love test", usage: ".love <a> <b>", permission: "user", async run(ctx) { return `${ctx.args[0]} + ${ctx.args[1]} = ${1+Math.floor(Math.random()*100)}%`; } };

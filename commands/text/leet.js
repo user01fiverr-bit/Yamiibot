@@ -1,0 +1,1 @@
+module.exports = { name: "leet", category: "text", description: "1337 speak", usage: ".leet hello", permission: "user", async run(ctx) { const map = {'a':'4','e':'3','i':'1','o':'0','s':'5','t':'7'}; return ctx.args.join(" ").toLowerCase().split("").map(c=>map[c]||c).join(""); } };

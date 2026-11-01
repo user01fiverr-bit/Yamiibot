@@ -1,0 +1,1 @@
+module.exports = { name: "hacker", category: "textmaker", description: "Fancy hacker text", usage: ".hacker <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

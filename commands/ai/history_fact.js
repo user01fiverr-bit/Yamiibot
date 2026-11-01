@@ -1,0 +1,1 @@
+module.exports = { name: "history_fact", category: "ai", description: "AI generator: history_fact", usage: ".history_fact <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .history_fact <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a history_fact based on: " + ctx.args.join(" ")); } };

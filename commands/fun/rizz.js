@@ -1,0 +1,1 @@
+module.exports = { name: "rizz", category: "fun", description: "Generate rizz", usage: ".rizz", permission: "user", async run(ctx) { return await ctx.ai.ask("Write a smooth, funny, and respectful pickup line."); } };

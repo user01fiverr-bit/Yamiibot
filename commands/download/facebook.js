@@ -1,0 +1,1 @@
+module.exports = { name: "facebook", aliases: ["fb"], category: "download", description: "FB video", usage: ".fb <url>", permission: "user", async run() { return "❌ Cloud only. Works on Oracle."; } };

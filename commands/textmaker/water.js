@@ -1,0 +1,1 @@
+module.exports = { name: "water", category: "textmaker", description: "Fancy water text", usage: ".water <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

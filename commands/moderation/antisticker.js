@@ -1,0 +1,2 @@
+const mod = require("../../lib/moderation");
+module.exports = { name: "antisticker", category: "moderation", description: "Toggle antisticker", usage: ".antisticker on/off", permission: "user", async run(ctx) { if(!ctx.jid.endsWith("@g.us")) return "Group only"; const state = ctx.args[0]?.toLowerCase() === "on"; mod.setGroup(ctx.jid, "antisticker", state); return `✅ ${state ? "ON" : "OFF"}: antisticker`; } };

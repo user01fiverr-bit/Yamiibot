@@ -1,0 +1,1 @@
+module.exports = { name: "quote", category: "fun", description: "Random quote", usage: ".quote", permission: "user", async run() { const Q=["Talk is cheap. Show me the code.","Simplicity is the ultimate sophistication."]; return Q[Math.floor(Math.random()*Q.length)]; } };

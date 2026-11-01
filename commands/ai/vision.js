@@ -1,0 +1,1 @@
+module.exports = { name: "vision", category: "ai", description: "Describe an image URL", usage: ".vision <url>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .vision <image_url>"; await ctx.reply("analyzing image..."); try { return await ctx.ai.describe(ctx.args[0]); } catch(e) { return "failed: " + e.message; } } };

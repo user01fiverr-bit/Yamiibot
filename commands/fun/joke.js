@@ -1,0 +1,1 @@
+module.exports = { name: "joke", category: "fun", description: "Random joke", usage: ".joke", permission: "user", async run() { const J=["Why did the developer go broke? Because he used up all his cache.","I would tell you a UDP joke, but you might not get it."]; return J[Math.floor(Math.random()*J.length)]; } };

@@ -1,0 +1,2 @@
+const eco = require("../../lib/economy");
+module.exports = { name: "lottery", category: "economy", description: "Play the daily lottery", usage: ".lottery", permission: "user", async run(ctx) { const u = eco.getUser(ctx.ownerWa); if(u.wallet < 500) return "❌ You need 500 coins to buy a ticket."; u.wallet -= 500; if(Math.random() < 0.05) { u.wallet += 5000; eco.saveUser(ctx.ownerWa, u); return "🎉 JACKPOT! You won 5,000 coins!"; } else { eco.saveUser(ctx.ownerWa, u); return "🎟️ Ticket bought. You didn't win this time."; } } };

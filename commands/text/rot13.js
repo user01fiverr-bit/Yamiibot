@@ -1,0 +1,1 @@
+module.exports = { name: "rot13", category: "text", description: "ROT13 cipher", usage: ".rot13 <text>", permission: "user", async run(ctx) { return ctx.args.join(" ").replace(/[a-zA-Z]/g, c => String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26)); } };

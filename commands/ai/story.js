@@ -1,0 +1,1 @@
+module.exports = { name: "story", category: "ai", description: "Write a story", usage: ".story <topic>", permission: "user", async run(ctx) { return await ctx.ai.ask("Short story about: " + ctx.args.join(" ")); } };

@@ -1,0 +1,1 @@
+module.exports = { name: "slot", category: "fun", description: "Slot machine", usage: ".slot", permission: "user", async run() { const s=["🍒","🍋","🍊","⭐","💎","7️⃣"]; const r=[s[Math.floor(Math.random()*6)],s[Math.floor(Math.random()*6)],s[Math.floor(Math.random()*6)]]; return r.join(" | "); } };

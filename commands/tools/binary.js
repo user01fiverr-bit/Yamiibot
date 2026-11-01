@@ -1,0 +1,1 @@
+module.exports = { name: "binary", category: "tools", description: "Text to binary", usage: ".binary <text>", permission: "user", async run(ctx) { return ctx.args.join(" ").split('').map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' '); } };

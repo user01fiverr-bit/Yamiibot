@@ -1,0 +1,1 @@
+module.exports = { name: "title", category: "text", description: "Title case", usage: ".title <text>", permission: "user", async run(ctx) { return ctx.args.join(" ").replace(/\w\S*/g, w => w[0].toUpperCase() + w.slice(1).toLowerCase()); } };

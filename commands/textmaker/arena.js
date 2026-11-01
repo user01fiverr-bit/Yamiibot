@@ -1,0 +1,1 @@
+module.exports = { name: "arena", category: "textmaker", description: "Fancy arena text", usage: ".arena <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

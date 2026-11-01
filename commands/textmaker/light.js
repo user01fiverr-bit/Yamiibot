@@ -1,0 +1,1 @@
+module.exports = { name: "light", category: "textmaker", description: "Fancy light text", usage: ".light <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

@@ -1,0 +1,1 @@
+module.exports = { name: "summarize", category: "ai", description: "AI generator: summarize", usage: ".summarize <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .summarize <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a summarize based on: " + ctx.args.join(" ")); } };

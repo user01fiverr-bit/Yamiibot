@@ -1,0 +1,2 @@
+const eco = require("../../lib/economy");
+module.exports = { name: "crime", category: "economy", description: "Commit a crime for coins", usage: ".crime", permission: "user", async run(ctx) { const u=eco.getUser(ctx.ownerWa); if(Math.random()<0.5){ const amt=Math.floor(Math.random()*300)+100; u.wallet+=amt; eco.saveUser(ctx.ownerWa,u); return `🦹 Success! You got ${amt} coins.`; } else { const fine=Math.floor(Math.random()*100); u.wallet-=fine; eco.saveUser(ctx.ownerWa,u); return `🚔 Caught! You paid ${fine} coins fine.`; } } };

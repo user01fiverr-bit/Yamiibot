@@ -1,0 +1,1 @@
+module.exports = { name: "info", aliases: ["stats"], category: "general", description: "Bot system info", usage: ".info", permission: "user", async run(ctx) { const up = process.uptime(); const h = Math.floor(up/3600), m = Math.floor((up%3600)/60); return `*${ctx.config.botName}*\nuptime: ${h}h ${m}m\ncommands: ${ctx.registry.count()}\nnode: ${process.version}`; } };

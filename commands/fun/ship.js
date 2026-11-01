@@ -1,0 +1,1 @@
+module.exports = { name: "ship", category: "fun", description: "Ship two names", usage: ".ship <a> <b>", permission: "user", async run(ctx) { if(ctx.args.length<2) return "usage: .ship <a> <b>"; return `❤️ ${ctx.args[0]} + ${ctx.args[1]} → ${1+Math.floor(Math.random()*100)}%`; } };

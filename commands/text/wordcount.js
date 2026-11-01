@@ -1,0 +1,1 @@
+module.exports = { name: "wordcount", category: "text", description: "Count words", usage: ".wordcount <text>", permission: "user", async run(ctx) { return `words: ${ctx.args.join(" ").split(/\s+/).length}`; } };

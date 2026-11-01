@@ -1,0 +1,1 @@
+module.exports = { name: "explain", category: "ai", description: "Explain a topic", usage: ".explain <topic>", permission: "user", async run(ctx) { return await ctx.ai.ask("Explain simply:\n" + ctx.args.join(" ")); } };

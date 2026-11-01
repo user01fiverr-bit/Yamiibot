@@ -1,0 +1,1 @@
+module.exports = { name: "yt", category: "download", description: "YouTube link", usage: ".yt <url>", permission: "user", async run(ctx) { return "Download staged for cloud server. URL: " + ctx.args[0]; } };

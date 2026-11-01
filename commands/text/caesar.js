@@ -1,0 +1,1 @@
+module.exports = { name: "caesar", category: "text", description: "Caesar cipher", usage: ".caesar 3 hello", permission: "user", async run(ctx) { const shift = parseInt(ctx.args[0])||3; const txt = ctx.args.slice(1).join(" "); return txt.replace(/[a-z]/gi, c => String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + shift) ? c : c - 26)); } };

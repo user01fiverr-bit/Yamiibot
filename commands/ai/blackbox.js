@@ -1,0 +1,1 @@
+module.exports = { name: "blackbox", category: "ai", description: "Coding AI", usage: ".blackbox <text>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .blackbox <code request>"; return await ctx.ai.ask("Write code for: " + ctx.args.join(" "), "You are Blackbox AI, an expert programmer. Output only code."); } };

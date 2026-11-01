@@ -1,0 +1,1 @@
+module.exports = { name: "qr", category: "tools", description: "Generate QR code", usage: ".qr text", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .qr text"; await ctx.send(`https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=${encodeURIComponent(ctx.args.join(" "))}`); } };

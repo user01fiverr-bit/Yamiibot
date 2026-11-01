@@ -1,0 +1,1 @@
+module.exports = { name: "setdesc", category: "admin", description: "Set group description", usage: ".setdesc <text>", permission: "user", async run(ctx) { await ctx.sock.groupUpdateDescription(ctx.jid, ctx.args.join(" ")); return "updated"; } };

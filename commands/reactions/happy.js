@@ -1,0 +1,1 @@
+module.exports = { name: "happy", category: "reactions", description: "Send happy reaction", usage: ".happy", permission: "user", async run(ctx) { try { const r = await fetch("https://nekos.best/api/v2/happy"); const j = await r.json(); await ctx.send(j.results[0].url); } catch(e) { return "Failed"; } } };

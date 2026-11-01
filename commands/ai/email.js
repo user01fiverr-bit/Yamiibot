@@ -1,0 +1,1 @@
+module.exports = { name: "email", category: "ai", description: "Write an email", usage: ".email <subject>", permission: "user", async run(ctx) { return await ctx.ai.ask("Write a professional email about: " + ctx.args.join(" ")); } };

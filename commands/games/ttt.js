@@ -1,0 +1,1 @@
+module.exports = { name: "ttt", category: "games", description: "Tic-Tac-Toe", usage: ".ttt", permission: "user", async run() { return `🎮 *Tic-Tac-Toe*\n1️⃣|2️⃣|3️⃣\n4️⃣|5️⃣|6️⃣\n7️⃣|8️⃣|9️⃣\n\nType \`.ttt <1-9>\` to play.`; } };

@@ -1,0 +1,1 @@
+module.exports = { name: "naruto", category: "textmaker", description: "Fancy naruto text", usage: ".naruto <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

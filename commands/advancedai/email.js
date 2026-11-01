@@ -1,0 +1,1 @@
+module.exports = { name: "email", category: "advancedai", description: "AI Email Writer", usage: ".email sick leave", permission: "user", async run(ctx) { return await ctx.ai.ask("Write a professional email about: " + ctx.args.join(" ")); } };

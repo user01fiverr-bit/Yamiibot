@@ -1,0 +1,1 @@
+module.exports = { name: "kiss", category: "reactions", description: "Send a kiss reaction", usage: ".kiss", permission: "user", async run(ctx) { try { const r = await fetch("https://nekos.best/api/v2/kiss"); const j = await r.json(); await ctx.send(j.results[0].url); } catch(e) { return "failed"; } } };

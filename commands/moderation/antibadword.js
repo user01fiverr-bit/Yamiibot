@@ -1,0 +1,2 @@
+const mod = require("../../lib/moderation");
+module.exports = { name: "antibadword", category: "moderation", description: "Toggle antibadword", usage: ".antibadword on/off", permission: "user", async run(ctx) { if(!ctx.jid.endsWith("@g.us")) return "Group only"; const state = ctx.args[0]?.toLowerCase() === "on"; mod.setGroup(ctx.jid, "antibadword", state); return `✅ ${state ? "ON" : "OFF"}: antibadword`; } };

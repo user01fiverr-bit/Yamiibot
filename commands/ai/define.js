@@ -1,0 +1,1 @@
+module.exports = { name: "define", category: "ai", description: "Dictionary", usage: ".define <word>", permission: "user", async run(ctx) { return await ctx.ai.ask("Define this word: " + ctx.args[0]); } };

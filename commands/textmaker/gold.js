@@ -1,0 +1,1 @@
+module.exports = { name: "gold", category: "textmaker", description: "Fancy gold text", usage: ".gold <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

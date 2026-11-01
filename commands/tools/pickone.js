@@ -1,0 +1,1 @@
+module.exports = { name: "pickone", category: "tools", description: "Pick random option", usage: ".pickone a, b, c", permission: "user", async run(ctx) { const opts = ctx.text.replace(/^\.pickone\s+/i, "").split(",").map(o=>o.trim()).filter(Boolean); if(opts.length<2) return "usage: .pickone a, b, c"; return `I pick: *${opts[Math.floor(Math.random()*opts.length)]}*`; } };

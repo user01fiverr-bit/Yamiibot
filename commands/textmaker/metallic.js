@@ -1,0 +1,1 @@
+module.exports = { name: "metallic", category: "textmaker", description: "Fancy metallic text", usage: ".metallic <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

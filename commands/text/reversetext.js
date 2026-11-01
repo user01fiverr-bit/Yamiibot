@@ -1,0 +1,1 @@
+module.exports = { name: "reversetext", category: "text", description: "Reverse text", usage: ".reversetext hello", permission: "user", async run(ctx) { return ctx.args.join(" ").split("").reverse().join(""); } };

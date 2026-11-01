@@ -1,0 +1,1 @@
+module.exports = { name: "setname", category: "admin", description: "Set group name", usage: ".setname <name>", permission: "user", async run(ctx) { if(!ctx.jid.endsWith("@g.us")) return "group only"; await ctx.sock.groupUpdateSubject(ctx.jid, ctx.args.join(" ")); return "name updated"; } };

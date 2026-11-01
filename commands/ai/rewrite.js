@@ -1,0 +1,1 @@
+module.exports = { name: "rewrite", category: "ai", description: "AI generator: rewrite", usage: ".rewrite <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .rewrite <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a rewrite based on: " + ctx.args.join(" ")); } };

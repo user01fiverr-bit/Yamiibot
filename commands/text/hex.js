@@ -1,0 +1,1 @@
+module.exports = { name: "hex", category: "text", description: "Text to hex", usage: ".hex <text>", permission: "user", async run(ctx) { return Buffer.from(ctx.args.join(" "),"utf8").toString("hex"); } };

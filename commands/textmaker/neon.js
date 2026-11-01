@@ -1,0 +1,1 @@
+module.exports = { name: "neon", category: "textmaker", description: "Fancy neon text", usage: ".neon <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };
