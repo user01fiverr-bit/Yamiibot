@@ -26,14 +26,15 @@ module.exports = {
       const buf = await downloadMediaMessage({ key: q.key, message: q.message }, "buffer", {}, { logger: console, reuploadRequest: ctx.sock.updateMediaMessage });
       fs.writeFileSync(tmpIn, buf);
 
+      // Use sharp to check if it is animated (has multiple pages)
       const metadata = await sharp(buf).metadata();
       const isAnimated = metadata.pages && metadata.pages > 1;
 
       if (isAnimated) {
-        // Sharp extracts the animation and converts to GIF
+        // 1. Convert animated WebP to GIF using sharp
         await sharp(buf, { animated: true }).gif().toFile(tmpGif);
         
-        // System ffmpeg converts the GIF to MP4
+        // 2. Convert GIF to MP4 using the system ffmpeg
         await new Promise((res, rej) => {
             exec(`ffmpeg -y -i "${tmpGif}" -c:v libx264 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${tmpOutVid}"`, (err, stdout, stderr) => {
                 if (err) return rej(new Error(stderr || err.message));
@@ -46,6 +47,7 @@ module.exports = {
         if (fs.existsSync(tmpOutVid)) fs.unlinkSync(tmpOutVid);
         if (fs.existsSync(tmpGif)) fs.unlinkSync(tmpGif);
       } else {
+        // Static image
         await sharp(buf).png().toFile(tmpOutImg);
         await ctx.sock.sendMessage(ctx.jid, { image: fs.readFileSync(tmpOutImg), caption: "🖼️ Original Image" }, { quoted: q });
         if (fs.existsSync(tmpOutImg)) fs.unlinkSync(tmpOutImg);
