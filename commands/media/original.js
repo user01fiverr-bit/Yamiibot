@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
 const { downloadMediaMessage } = require("@whiskeysockets/baileys");
-const ffmpegPath = require('ffmpeg-static');
 
 module.exports = {
   name: "original",
@@ -25,12 +24,13 @@ module.exports = {
       const buf = await downloadMediaMessage({ key: q.key, message: q.message }, "buffer", {}, { logger: console, reuploadRequest: ctx.sock.updateMediaMessage });
       fs.writeFileSync(tmpIn, buf);
 
-      // Read the file header to see if it has animation frames
-      const isAnimated = buf.toString('ascii').includes('ANIM');
+      // Pure JS way to detect animated WebP (checks for 'ANIM' chunk in header)
+      const isAnimated = buf.length > 16 && buf.toString('ascii', 12, 16) === 'ANIM';
 
       if (isAnimated) {
         await new Promise((res, rej) => {
-            exec(`"${ffmpegPath}" -y -i "${tmpIn}" -c:v libx264 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${tmpOutVid}"`, (err, stdout, stderr) => {
+            // USE SYSTEM FFMPEG DIRECTLY
+            exec(`ffmpeg -y -i "${tmpIn}" -c:v libx264 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${tmpOutVid}"`, (err, stdout, stderr) => {
                 if (err) return rej(new Error(stderr || err.message));
                 res();
             });
@@ -39,7 +39,8 @@ module.exports = {
         fs.unlinkSync(tmpOutVid);
       } else {
         await new Promise((res, rej) => {
-            exec(`"${ffmpegPath}" -y -i "${tmpIn}" "${tmpOutImg}"`, (err, stdout, stderr) => {
+            // USE SYSTEM FFMPEG DIRECTLY
+            exec(`ffmpeg -y -i "${tmpIn}" "${tmpOutImg}"`, (err, stdout, stderr) => {
                 if (err) return rej(new Error(stderr || err.message));
                 res();
             });
