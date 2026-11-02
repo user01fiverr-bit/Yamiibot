@@ -28,11 +28,21 @@ module.exports = {
       const isAnimated = buf.toString('ascii', 0, 100).includes('ANIM');
 
       if (isAnimated) {
-        await new Promise((res, rej) => execFile(ffmpegPath, ["-y", "-i", tmpIn, "-c:v", "libx264", "-pix_fmt", "yuv420p", tmpOutVid], (e) => e ? rej(e) : res()));
+        // FIX: Force width and height to be even numbers for H.264
+        await new Promise((res, rej) => execFile(ffmpegPath, [
+          "-y", "-i", tmpIn, 
+          "-c:v", "libx264", 
+          "-pix_fmt", "yuv420p",
+          "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2", 
+          tmpOutVid
+        ], (e, stdout, stderr) => e ? rej(new Error(stderr || e.message)) : res()));
+        
         await ctx.sock.sendMessage(ctx.jid, { video: fs.readFileSync(tmpOutVid), caption: "🎥 Original Video" }, { quoted: q });
         fs.unlinkSync(tmpOutVid);
       } else {
-        await execFile(ffmpegPath, ["-y", "-i", tmpIn, tmpOutImg]);
+        // FIX: Make the code wait for the image to finish converting
+        await new Promise((res, rej) => execFile(ffmpegPath, ["-y", "-i", tmpIn, tmpOutImg], (e, stdout, stderr) => e ? rej(new Error(stderr || e.message)) : res()));
+        
         await ctx.sock.sendMessage(ctx.jid, { image: fs.readFileSync(tmpOutImg), caption: "🖼️ Original Image" }, { quoted: q });
         fs.unlinkSync(tmpOutImg);
       }
