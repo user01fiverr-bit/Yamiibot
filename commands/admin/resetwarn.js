@@ -1,0 +1,2 @@
+const admin = require("../../lib/admin");
+module.exports = { name: "resetwarn", category: "admin", description: "Clear warnings", usage: ".resetwarn @user", permission: "user", async run(ctx) { const t = ctx.quotedRaw?.key?.participant || (ctx.args[0] ? ctx.args[0].replace(/\D/g,"")+"@s.whatsapp.net" : null); if(!t) return "Reply to a user."; admin.resetWarns(t); return `✅ Warnings cleared for @${t.split("@")[0]}`; } };

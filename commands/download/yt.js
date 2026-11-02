@@ -1,1 +1,2 @@
-module.exports = { name: "yt", category: "download", description: "YouTube link", usage: ".yt <url>", permission: "user", async run(ctx) { return "Download staged for cloud server. URL: " + ctx.args[0]; } };
+const dl = require("../../lib/cobalt");
+module.exports = { name: "yt", aliases: ["youtube"], category: "download", description: "Download YouTube video", usage: ".yt <url>", permission: "user", async run(ctx) { return await dl.download(ctx, false); } };

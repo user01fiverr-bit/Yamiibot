@@ -1,1 +1,2 @@
-module.exports = { name: "tiktok", category: "download", description: "TikTok link", usage: ".tiktok <url>", permission: "user", async run(ctx) { return "Download staged for cloud server. URL: " + ctx.args[0]; } };
+const dl = require("../../lib/cobalt");
+module.exports = { name: "tiktok", aliases: ["tt"], category: "download", description: "Download TikTok video", usage: ".tiktok <url>", permission: "user", async run(ctx) { return await dl.download(ctx, false); } };

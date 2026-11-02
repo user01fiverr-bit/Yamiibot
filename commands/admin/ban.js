@@ -1,0 +1,2 @@
+const admin = require("../../lib/admin");
+module.exports = { name: "ban", category: "admin", description: "Ban a user", usage: ".ban @user", permission: "user", async run(ctx) { const t = ctx.quotedRaw?.key?.participant || (ctx.args[0] ? ctx.args[0].replace(/\D/g,"")+"@s.whatsapp.net" : null); if(!t) return "Reply to a user to ban."; admin.ban(t, ctx.args.slice(1).join(" ")); return `✅ Banned @${t.split("@")[0]}`; } };

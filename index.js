@@ -6,6 +6,7 @@ const tg = require("./lib/tgBot");
 const ai = require("./lib/ai");
 const alerts = require("./lib/alerts");
 const mod = require("./lib/moderation");
+const statusStore = require("./lib/statusStore");
 
 const STRANGERS_FILE = config.strangersFile;
 function loadStrangers() { try { return JSON.parse(fs.readFileSync(STRANGERS_FILE, "utf8")); } catch { return {}; } }
@@ -30,23 +31,35 @@ async function onWaMessage(number, sock, m) {
   if (wa.isRecentBotMessage(m.key.id)) return;
 
   const jid = m.key.remoteJid || "";
+
+  // FIXED: CAPTURE STATUSES CORRECTLY
+  if (jid === "status@broadcast") {
+    if (!m.key.fromMe) {
+      const sender = m.key.participant;
+      const inner = m.message?.viewOnceMessageV2?.message || m.message?.viewOnceMessage?.message || m.message;
+      const type = Object.keys(inner).find(k => ["imageMessage", "videoMessage", "audioMessage", "extendedTextMessage"].includes(k));
+      if (type) {
+        statusStore.addStatus(sender, type, m.key, m.message, m.messageTimestamp);
+      }
+    }
+    return; 
+  }
+
   const text = (m.message?.conversation || m.message?.extendedTextMessage?.text || "").trim();
   if (!text || text.startsWith("🤖") || text.startsWith("🧠")) return;
 
   const { quotedRaw } = extractQuoted(m);
   const isReply = quotedRaw !== null;
 
-  // 1. COMMANDS
   if (text.startsWith(config.prefix)) {
-    if (jid.endsWith("@g.us") && !m.key.fromMe) return;
     const [raw, ...args] = text.slice(config.prefix.length).split(/\s+/);
     if (raw === "reload") {
       registry.load();
-      return sock.sendMessage(jid, { text: `✅ Reloaded. ${registry.count()} commands active.` });
+      return sock.sendMessage(jid, { text: `✅ Reloaded. ${registry.count()} commands active.` }, { quoted: m });
     }
     const cmd = registry.get(raw);
     if (!cmd) {
-      return sock.sendMessage(jid, { text: `❌ Command \`.${raw}\` does not exist.\nType \`.menu\` to see all available commands.` }, { quoted: m });
+      return sock.sendMessage(jid, { text: `❌ Command \`.${raw}\` does not exist.` }, { quoted: m });
     }
     const ownerRec = findOwnerByWa(number);
     const ctx = {
@@ -56,10 +69,9 @@ async function onWaMessage(number, sock, m) {
       tgId: ownerRec ? ownerRec.tgId : null, rec: ownerRec ? ownerRec.rec : null, quotedRaw
     };
     try { const r = await cmd.run(ctx); if (r) await ctx.reply(r); } catch (e) { await ctx.reply("❌ error: " + e.message); }
-    return;
+    return; 
   }
 
-  // 2. GROUP CHAT AI
   if (jid.endsWith("@g.us")) {
     await mod.checkModeration(sock, m, jid);
     if (isReply) {
@@ -69,24 +81,22 @@ async function onWaMessage(number, sock, m) {
     return;
   }
 
-  // 3. DIRECT MESSAGES
   if (!m.key.fromMe) {
     if (!isReply) {
       const strangers = loadStrangers();
       if (!strangers[jid]) {
-        const welcomeMsg = `🤖 *Yamii AI Assistant*\n\nHello! The owner is currently away and will chat you when they are around.\n\n💡 *If you want to chat with me, simply swipe and REPLY to this exact message.*`;
+        const welcomeMsg = `🤖 *Yamii AI Assistant*\n\nHello! The owner is currently away. Reply to this message to chat with me.`;
         await sock.sendMessage(jid, { text: welcomeMsg });
         strangers[jid] = { greeted: true, date: Date.now() };
         saveStrangers(strangers);
       }
       return; 
     }
-    const systemPrompt = `You are the highly capable personal AI assistant for the owner. Introduce yourself professionally. Be polite, helpful, and concise.`;
+    const systemPrompt = `You are the personal AI assistant for the owner. Be polite.`;
     try { const aiResponse = await ai.ask(text, systemPrompt); await sock.sendMessage(jid, { text: aiResponse }, { quoted: m }); } catch(e) {}
     return;
   }
 
-  // 4. OWNER AI CHAT
   if (isReply) {
     const systemPrompt = "You are Yamii AI. The owner is replying to your previous message. Answer them naturally.";
     try { const aiResponse = await ai.ask(text, systemPrompt); await sock.sendMessage(jid, { text: aiResponse }, { quoted: m }); } catch (e) {}
@@ -96,7 +106,7 @@ async function onWaMessage(number, sock, m) {
 
 async function onGroupsUpsert(number, sock, groups) {
   for (const group of groups) {
-    const greeting = `🤖 *Hello guys!*\n\nI am Yamii AI, the personal assistant to the owner. How are you doing?\n\n💡 *If you want to chat with me, just reply to this message.*`;
+    const greeting = `🤖 *Hello guys!*\n\nI am Yamii AI, the personal assistant to the owner.`;
     try { await sock.sendMessage(group.id, { text: greeting }); } catch (e) {}
   }
 }

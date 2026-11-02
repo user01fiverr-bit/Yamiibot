@@ -1,0 +1,2 @@
+const admin = require("../../lib/admin");
+module.exports = { name: "warn", category: "admin", description: "Warn a user", usage: ".warn @user", permission: "user", async run(ctx) { const t = ctx.quotedRaw?.key?.participant || (ctx.args[0] ? ctx.args[0].replace(/\D/g,"")+"@s.whatsapp.net" : null); if(!t) return "Reply to a user."; const count = admin.warn(t, ctx.args.slice(1).join(" ")); return `⚠️ Warned @${t.split("@")[0]} (${count}/3).`; } };

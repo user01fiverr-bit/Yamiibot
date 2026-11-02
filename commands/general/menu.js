@@ -6,15 +6,23 @@ module.exports = {
     
     let text = `✨ *${ctx.config.botName.toUpperCase()} MENU* ✨\n`;
     text += `━━━━━━━━━━━━━━━━━━\n`;
-    text += `Total Commands: *${total}*\n\n`;
+    text += `🤖 *Total Commands:* ${total}\n\n`;
     
     for (const cat of cats) {
-      const count = ctx.registry.inCategory(cat).length;
-      text += `📌 *${cat.toUpperCase()}* (${count})\n`;
+      const items = ctx.registry.inCategory(cat);
+      
+      // Category Header
+      text += `📌 *${cat.toUpperCase()}* (${items.length})\n`;
+      
+      // Command List
+      for (const c of items) {
+        text += ` ├ \`${ctx.config.prefix}${c.name}\` — _${c.description || "no description"}_\n`;
+      }
+      text += `\n`; // Space between categories
     }
     
-    text += `\n━━━━━━━━━━━━━━━━━━\n`;
-    text += `💡 To find a command, type:\n\`.find <keyword>\`\nExample: \`.find sticker\``;
+    text += `━━━━━━━━━━━━━━━━━━\n`;
+    text += `💡 *Tip:* Type \`.find <keyword>\` to search for a specific command.`;
     
     return text;
   },
