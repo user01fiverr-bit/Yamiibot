@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const os = require("os");
 const { execFile } = require("child_process");
 const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const ffmpegInstaller = require('@ffmpeg-installer/ffmpeg');
@@ -16,19 +15,21 @@ module.exports = {
     const q = ctx.quotedRaw;
     if (!q || !q.message.stickerMessage) return "reply to a sticker";
 
-    const tmpIn = path.join(os.tmpdir(), "in-" + Date.now() + ".webp");
-    const tmpOutVid = path.join(os.tmpdir(), "out-" + Date.now() + ".mp4");
-    const tmpOutImg = path.join(os.tmpdir(), "out-" + Date.now() + ".png");
+    // FIX: Use the bot's own directory instead of the blocked /tmp folder
+    const tmpDir = path.join(process.cwd(), "tmp");
+    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
+
+    const tmpIn = path.join(tmpDir, "in-" + Date.now() + ".webp");
+    const tmpOutVid = path.join(tmpDir, "out-" + Date.now() + ".mp4");
+    const tmpOutImg = path.join(tmpDir, "out-" + Date.now() + ".png");
 
     try {
       const buf = await downloadMediaMessage({ key: q.key, message: q.message }, "buffer", {}, { logger: console, reuploadRequest: ctx.sock.updateMediaMessage });
       fs.writeFileSync(tmpIn, buf);
 
-      // Check if it is a video sticker (animated)
       const isAnimated = buf.toString('ascii', 0, 100).includes('ANIM');
 
       if (isAnimated) {
-        // FIX: Force width and height to be even numbers for H.264
         await new Promise((res, rej) => execFile(ffmpegPath, [
           "-y", "-i", tmpIn, 
           "-c:v", "libx264", 
@@ -40,7 +41,6 @@ module.exports = {
         await ctx.sock.sendMessage(ctx.jid, { video: fs.readFileSync(tmpOutVid), caption: "🎥 Original Video" }, { quoted: q });
         fs.unlinkSync(tmpOutVid);
       } else {
-        // FIX: Make the code wait for the image to finish converting
         await new Promise((res, rej) => execFile(ffmpegPath, ["-y", "-i", tmpIn, tmpOutImg], (e, stdout, stderr) => e ? rej(new Error(stderr || e.message)) : res()));
         
         await ctx.sock.sendMessage(ctx.jid, { image: fs.readFileSync(tmpOutImg), caption: "🖼️ Original Image" }, { quoted: q });
@@ -48,6 +48,7 @@ module.exports = {
       }
       fs.unlinkSync(tmpIn);
     } catch (e) {
+      console.log("FFMPEG ERROR:", e.message);
       return "failed: " + e.message;
     }
   }
