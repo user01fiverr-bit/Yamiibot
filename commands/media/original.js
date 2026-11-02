@@ -26,12 +26,10 @@ module.exports = {
       const buf = await downloadMediaMessage({ key: q.key, message: q.message }, "buffer", {}, { logger: console, reuploadRequest: ctx.sock.updateMediaMessage });
       fs.writeFileSync(tmpIn, buf);
 
-      // Use sharp to check if it's animated
       const metadata = await sharp(buf).metadata();
       const isAnimated = metadata.pages && metadata.pages > 1;
 
       if (isAnimated) {
-        // Use ffmpeg-static for video
         await new Promise((res, rej) => {
             exec(`"${ffmpegPath}" -y -i "${tmpIn}" -c:v libx264 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${tmpOutVid}"`, (err, stdout, stderr) => {
                 if (err) return rej(new Error(stderr || err.message));
@@ -41,7 +39,6 @@ module.exports = {
         await ctx.sock.sendMessage(ctx.jid, { video: fs.readFileSync(tmpOutVid), caption: "🎥 Original Video" }, { quoted: q });
         fs.unlinkSync(tmpOutVid);
       } else {
-        // Use sharp for image (100% reliable)
         await sharp(buf).png().toFile(tmpOutImg);
         await ctx.sock.sendMessage(ctx.jid, { image: fs.readFileSync(tmpOutImg), caption: "🖼️ Original Image" }, { quoted: q });
         fs.unlinkSync(tmpOutImg);
