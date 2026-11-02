@@ -1,0 +1,1 @@
+module.exports = { name: "idea", category: "ai", description: "Business idea", usage: ".idea <topic>", permission: "user", async run(ctx) { return await ctx.ai.ask("Give me a business idea for: " + ctx.args.join(" ")); } };

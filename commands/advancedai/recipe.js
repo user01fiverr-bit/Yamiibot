@@ -1,0 +1,1 @@
+module.exports = { name: "recipe", category: "advancedai", description: "AI Recipe", usage: ".recipe rice and chicken", permission: "user", async run(ctx) { return await ctx.ai.ask("Give me a simple recipe using: " + ctx.args.join(" ")); } };

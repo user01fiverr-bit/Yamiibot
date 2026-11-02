@@ -1,0 +1,1 @@
+module.exports = { name: "math_tutor", category: "ai", description: "AI generator: math_tutor", usage: ".math_tutor <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .math_tutor <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a math_tutor based on: " + ctx.args.join(" ")); } };

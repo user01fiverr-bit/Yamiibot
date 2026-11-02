@@ -1,0 +1,1 @@
+module.exports = { name: "snow", category: "textmaker", description: "Fancy snow text", usage: ".snow <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

@@ -1,0 +1,1 @@
+module.exports = { name: "base", category: "tools", description: "Convert number bases", usage: ".base <from> <to> <num>", permission: "user", async run(ctx) { const v=parseInt(ctx.args[2],parseInt(ctx.args[0])); return v.toString(parseInt(ctx.args[1])); } };

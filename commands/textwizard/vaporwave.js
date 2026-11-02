@@ -1,0 +1,1 @@
+module.exports = { name: "vaporwave", category: "textwizard", description: "V a p o r w a v e", usage: ".vaporwave hello", permission: "user", async run(ctx) { return ctx.args.join(" ").toUpperCase().split("").join(" "); } };

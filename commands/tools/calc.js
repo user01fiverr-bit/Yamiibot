@@ -1,0 +1,1 @@
+module.exports = { name: "calc", category: "tools", description: "Calculator", usage: ".calc 2+2", permission: "user", async run(ctx) { const e=ctx.args.join(" "); try{ return e+" = "+Function('"use strict";return ('+e+')')(); }catch{ return "invalid math"; } } };

@@ -1,0 +1,1 @@
+module.exports = { name: "handhold", category: "reactions", description: "Send a handhold reaction", usage: ".handhold", permission: "user", async run(ctx) { try { const r = await fetch("https://nekos.best/api/v2/handhold"); const j = await r.json(); await ctx.send(j.results[0].url); } catch(e) { return "failed"; } } };

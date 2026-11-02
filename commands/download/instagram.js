@@ -1,0 +1,1 @@
+module.exports = { name: "instagram", aliases: ["ig"], category: "download", description: "IG media", usage: ".ig <url>", permission: "user", async run() { return "❌ Cloud only. Works on Oracle."; } };

@@ -1,0 +1,1 @@
+module.exports = { name: "tweet", category: "ai", description: "AI generator: tweet", usage: ".tweet <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .tweet <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a tweet based on: " + ctx.args.join(" ")); } };

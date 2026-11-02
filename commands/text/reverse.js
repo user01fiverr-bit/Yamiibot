@@ -1,0 +1,1 @@
+module.exports = { name: "reverse", category: "text", description: "Reverse text", usage: ".reverse <text>", permission: "user", async run(ctx) { return ctx.args.join(" ").split("").reverse().join(""); } };

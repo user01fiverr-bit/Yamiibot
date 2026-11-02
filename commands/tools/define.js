@@ -1,0 +1,1 @@
+module.exports = { name: "define", category: "tools", description: "Dictionary", usage: ".define <word>", permission: "user", async run(ctx) { try{ const r=await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+ctx.args[0]); const j=await r.json(); return `${ctx.args[0]}: ${j[0].meanings[0].definitions[0].definition}`; }catch(e){ return "not found"; } } };

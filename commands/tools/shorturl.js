@@ -1,0 +1,1 @@
+module.exports = { name: "shorturl", category: "tools", description: "Shorten URL", usage: ".shorturl <url>", permission: "user", async run(ctx) { try{ const r=await fetch("https://is.gd/create.php?format=simple&url="+encodeURIComponent(ctx.args[0])); return await r.text(); }catch(e){ return "failed"; } } };

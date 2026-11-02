@@ -1,0 +1,1 @@
+module.exports = { name: "impressive", category: "textmaker", description: "Fancy impressive text", usage: ".impressive <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

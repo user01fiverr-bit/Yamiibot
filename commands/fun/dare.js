@@ -1,0 +1,1 @@
+module.exports = { name: "dare", category: "fun", description: "Dare challenge", usage: ".dare", permission: "user", async run() { const d = ["Send a selfie right now.", "Text your crush 'I like you'.", "Send the last photo in your gallery.", "Voice note yourself singing."]; return `🔥 Dare: ${d[Math.floor(Math.random()*d.length)]}`; } };

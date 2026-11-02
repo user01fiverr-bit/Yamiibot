@@ -1,0 +1,1 @@
+module.exports = { name: "haiku", category: "ai", description: "AI generator: haiku", usage: ".haiku <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .haiku <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a haiku based on: " + ctx.args.join(" ")); } };

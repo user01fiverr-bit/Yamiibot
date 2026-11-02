@@ -1,0 +1,1 @@
+module.exports = { name: "countdown", category: "text", description: "Generate a countdown", usage: ".countdown 5", permission: "user", async run(ctx) { const n = parseInt(ctx.args[0])||5; let out = []; for(let i=n; i>0; i--) out.push(i); out.push("🚀 Liftoff!"); return out.join(" ➔ "); } };

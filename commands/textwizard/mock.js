@@ -1,0 +1,1 @@
+module.exports = { name: "mock", category: "textwizard", description: "SpOnGeBoB text", usage: ".mock hello", permission: "user", async run(ctx) { return ctx.args.join(" ").split("").map((c,i)=>i%2===0?c.toLowerCase():c.toUpperCase()).join(""); } };

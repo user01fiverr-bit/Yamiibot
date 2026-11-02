@@ -1,0 +1,1 @@
+module.exports = { name: "revoke", category: "group", description: "Revoke group link", usage: ".revoke", permission: "user", async run(ctx) { if(!ctx.jid.endsWith("@g.us")) return "group only"; await ctx.sock.groupRevokeInvite(ctx.jid); return "link revoked"; } };

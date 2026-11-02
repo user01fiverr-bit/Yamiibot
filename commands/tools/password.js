@@ -1,0 +1,1 @@
+module.exports = { name: "password", category: "tools", description: "Generate password", usage: ".password 16", permission: "user", async run(ctx) { const n=parseInt(ctx.args[0]||"16",10); const c="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"; let p=""; for(let i=0;i<n;i++) p+=c[Math.floor(Math.random()*c.length)]; return `\`\`\`\n${p}\n\`\`\``; } };

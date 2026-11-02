@@ -1,0 +1,1 @@
+module.exports = { name: "pat", category: "reactions", description: "Send a pat reaction", usage: ".pat", permission: "user", async run(ctx) { try { const r = await fetch("https://nekos.best/api/v2/pat"); const j = await r.json(); await ctx.send(j.results[0].url); } catch(e) { return "failed"; } } };

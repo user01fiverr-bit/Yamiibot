@@ -1,0 +1,1 @@
+module.exports = { name: "codeblock", category: "text", description: "Format as code", usage: ".codeblock hello", permission: "user", async run(ctx) { return "```\n" + ctx.args.join(" ") + "\n```"; } };

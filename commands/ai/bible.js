@@ -1,0 +1,1 @@
+module.exports = { name: "bible", category: "ai", description: "Bible verse", usage: ".bible <topic>", permission: "user", async run(ctx) { return await ctx.ai.ask("Give me a Bible verse about: " + ctx.args.join(" ")); } };

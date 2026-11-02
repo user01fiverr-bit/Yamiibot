@@ -1,0 +1,1 @@
+module.exports = { name: "python", category: "ai", description: "AI generator: python", usage: ".python <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .python <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a python based on: " + ctx.args.join(" ")); } };

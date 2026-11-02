@@ -1,0 +1,1 @@
+module.exports = { name: "darkjoke", category: "fun", description: "AI dark joke", usage: ".darkjoke", permission: "user", async run(ctx) { return await ctx.ai.ask("Tell a slightly dark joke, keep it safe and funny."); } };

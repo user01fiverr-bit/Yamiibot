@@ -1,0 +1,1 @@
+module.exports = { name: "atbash", category: "text", description: "Atbash cipher", usage: ".atbash hello", permission: "user", async run(ctx) { const t = ctx.args.join(" ").toLowerCase(); return t.replace(/[a-z]/g, c => String.fromCharCode(122 - (c.charCodeAt(0) - 97))); } };

@@ -1,0 +1,1 @@
+module.exports = { name: "frozen", category: "textmaker", description: "Fancy frozen text", usage: ".frozen <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

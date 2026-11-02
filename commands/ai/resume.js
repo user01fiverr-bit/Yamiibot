@@ -1,0 +1,1 @@
+module.exports = { name: "resume", category: "ai", description: "AI generator: resume", usage: ".resume <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .resume <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a resume based on: " + ctx.args.join(" ")); } };

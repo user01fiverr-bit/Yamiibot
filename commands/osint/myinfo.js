@@ -1,0 +1,1 @@
+module.exports = { name: "myinfo", category: "osint", description: "Your Telegram info", usage: ".myinfo", permission: "user", async run(ctx) { return `🆔 Telegram ID: ${ctx.tgId || "Unknown"}\n📱 WhatsApp: ${ctx.ownerWa}`; } };

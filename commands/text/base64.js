@@ -1,0 +1,1 @@
+module.exports = { name: "base64", category: "text", description: "Base64 encode/decode", usage: ".base64 [-d] <text>", permission: "user", async run(ctx) { if(ctx.args[0]==="-d") return Buffer.from(ctx.args.slice(1).join(" "),"base64").toString("utf8"); return Buffer.from(ctx.args.join(" "),"utf8").toString("base64"); } };

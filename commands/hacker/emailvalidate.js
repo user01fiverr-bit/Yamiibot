@@ -1,0 +1,1 @@
+module.exports = { name: "emailcheck", category: "hacker", description: "Validate email format", usage: ".emailcheck test@gmail.com", permission: "user", async run(ctx) { const e=ctx.args[0]; if(!e) return "usage: .emailcheck email"; return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) ? "✅ Valid email format" : "❌ Invalid email format"; } };

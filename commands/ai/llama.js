@@ -1,0 +1,1 @@
+module.exports = { name: "llama", category: "ai", description: "Chat with Llama", usage: ".llama <text>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .llama hello"; return await ctx.ai.ask(ctx.args.join(" "), "You are Llama 3, a fast and friendly AI. Keep answers concise."); } };

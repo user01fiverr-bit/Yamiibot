@@ -1,0 +1,2 @@
+const M={A:".-",B:"-...",C:"-.-.",D:"-..",E:".",F:"..-.",G:"--.",H:"....",I:"..",J:".---",K:"-.-",L:".-..",M:"--",N:"-.",O:"---",P:".--.",Q:"--.-",R:".-.",S:"...",T:"-",U:"..-",V:"...-",W:".--",X:"-..-",Y:"-.--",Z:"--..","0":"-----","1":".----","2":"..---","3":"...--","4":"....-","5":".....","6":"-....","7":"--...","8":"---..","9":"----."," ":"/"};
+module.exports = { name: "morse", category: "text", description: "Text to Morse", usage: ".morse hello", permission: "user", async run(ctx) { return ctx.args.join(" ").toUpperCase().split("").map(c=>M[c]||"").join(" "); } };

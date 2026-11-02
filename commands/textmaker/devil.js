@@ -1,0 +1,1 @@
+module.exports = { name: "devil", category: "textmaker", description: "Fancy devil text", usage: ".devil <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

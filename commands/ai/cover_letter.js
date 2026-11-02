@@ -1,0 +1,1 @@
+module.exports = { name: "cover_letter", category: "ai", description: "AI generator: cover_letter", usage: ".cover_letter <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .cover_letter <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a cover_letter based on: " + ctx.args.join(" ")); } };

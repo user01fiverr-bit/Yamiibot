@@ -1,0 +1,1 @@
+module.exports = { name: "poem", category: "advancedai", description: "AI Poem", usage: ".poem love", permission: "user", async run(ctx) { return await ctx.ai.ask("Write a beautiful short poem about: " + (ctx.args.join(" ")||"life")); } };

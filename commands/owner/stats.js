@@ -1,0 +1,1 @@
+module.exports = { name: "stats", category: "owner", description: "Bot stats", usage: ".stats", permission: "user", async run(ctx) { return `commands: ${ctx.registry.count()}\nmem: ${(process.memoryUsage().rss/1048576).toFixed(1)} MB`; } };

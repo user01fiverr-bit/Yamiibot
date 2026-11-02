@@ -1,0 +1,1 @@
+module.exports = { name: "meme", category: "fun", description: "Random meme", usage: ".meme", permission: "user", async run(ctx) { try{ const r=await fetch("https://meme-api.com/gimme"); const j=await r.json(); await ctx.send(j.url); }catch(e){ return "failed"; } } };

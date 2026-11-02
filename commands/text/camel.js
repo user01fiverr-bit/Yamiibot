@@ -1,0 +1,1 @@
+module.exports = { name: "camel", category: "text", description: "camelCase", usage: ".camel <text>", permission: "user", async run(ctx) { return ctx.args.join(" ").toLowerCase().replace(/[^a-z0-9]+(.)/g, (_,c)=>c.toUpperCase()); } };

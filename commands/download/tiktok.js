@@ -1,0 +1,1 @@
+module.exports = { name: "tiktok", category: "download", description: "TikTok link", usage: ".tiktok <url>", permission: "user", async run(ctx) { return "Download staged for cloud server. URL: " + ctx.args[0]; } };

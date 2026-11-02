@@ -1,0 +1,1 @@
+module.exports = { name: "limerick", category: "ai", description: "AI generator: limerick", usage: ".limerick <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .limerick <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a limerick based on: " + ctx.args.join(" ")); } };

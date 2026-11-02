@@ -1,0 +1,1 @@
+module.exports = { name: "quran", category: "ai", description: "Quran verse", usage: ".quran <topic>", permission: "user", async run(ctx) { return await ctx.ai.ask("Give me a Quran verse about: " + ctx.args.join(" ")); } };

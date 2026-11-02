@@ -1,0 +1,1 @@
+module.exports = { name: "pubg", category: "textmaker", description: "Fancy pubg text", usage: ".pubg <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

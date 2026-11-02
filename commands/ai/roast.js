@@ -1,0 +1,1 @@
+module.exports = { name: "roast", category: "ai", description: "Roast someone", usage: ".roast <name>", permission: "user", async run(ctx) { return await ctx.ai.ask("Playful short roast of: " + (ctx.args.join(" ") || "you")); } };

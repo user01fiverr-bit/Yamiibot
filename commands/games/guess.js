@@ -1,0 +1,1 @@
+module.exports = { name: "guess", category: "games", description: "Guess 1-100", usage: ".guess 50", permission: "user", async run(ctx) { const num = parseInt(ctx.args[0]); if(isNaN(num)) return "Guess a number 1-100"; const target = 45; if(num === target) return "🎉 Correct! It was 45."; return num > target ? "📉 Too high!" : "📈 Too low!"; } };

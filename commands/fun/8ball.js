@@ -1,0 +1,1 @@
+module.exports = { name: "8ball", category: "fun", description: "Magic 8ball", usage: ".8ball <q>", permission: "user", async run() { const A=["Yes.","No.","Maybe.","Definitely.","Doubtful."]; return `🎱 ${A[Math.floor(Math.random()*A.length)]}`; } };

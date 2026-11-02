@@ -1,0 +1,1 @@
+module.exports = { name: "blackpink", category: "textmaker", description: "Fancy blackpink text", usage: ".blackpink <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

@@ -1,0 +1,1 @@
+module.exports = { name: "gpt", category: "ai", description: "Chat with GPT", usage: ".gpt <text>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .gpt hello"; return await ctx.ai.ask(ctx.args.join(" "), "You are ChatGPT, a helpful AI. Answer clearly."); } };

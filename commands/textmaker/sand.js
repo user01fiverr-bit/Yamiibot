@@ -1,0 +1,1 @@
+module.exports = { name: "sand", category: "textmaker", description: "Fancy sand text", usage: ".sand <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

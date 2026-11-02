@@ -1,0 +1,1 @@
+module.exports = { name: "humanize", category: "ai", description: "Humanize AI text", usage: ".humanize <text>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .humanize <text>"; return await ctx.ai.ask(ctx.args.join(" "), "Rewrite this text to sound completely human, casual, and natural."); } };

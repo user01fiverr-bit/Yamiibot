@@ -1,0 +1,1 @@
+module.exports = { name: "add", category: "group", description: "Add member", usage: ".add <number>", permission: "user", async run(ctx) { const t=ctx.args[0].replace(/\D/g,"")+"@s.whatsapp.net"; await ctx.sock.groupParticipantsUpdate(ctx.jid,[t],"add"); return "added"; } };

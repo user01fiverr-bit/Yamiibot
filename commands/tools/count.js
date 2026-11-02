@@ -1,0 +1,1 @@
+module.exports = { name: "count", category: "tools", description: "Count words/chars", usage: ".count <text>", permission: "user", async run(ctx) { const txt=ctx.args.join(" "); return `Chars: ${txt.length} | Words: ${txt.split(/\s+/).length}`; } };

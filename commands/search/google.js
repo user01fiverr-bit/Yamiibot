@@ -1,0 +1,1 @@
+module.exports = { name: "google", aliases: ["g"], category: "search", description: "Google search", usage: ".google <q>", permission: "user", async run(ctx) { return `https://www.google.com/search?q=${encodeURIComponent(ctx.args.join(" "))}`; } };

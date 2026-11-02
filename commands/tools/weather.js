@@ -1,0 +1,1 @@
+module.exports = { name: "weather", aliases: ["w"], category: "tools", description: "Get the weather", usage: ".weather <city>", permission: "user", async run(ctx) { if(!ctx.args.length) return "city?"; try{ const r = await fetch(`https://wttr.in/${encodeURIComponent(ctx.args.join(" "))}?format=3`); return (await r.text()).trim(); }catch(e){ return "failed"; } } };

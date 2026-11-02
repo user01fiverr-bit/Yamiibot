@@ -1,0 +1,1 @@
+module.exports = { name: "space", category: "text", description: "Add spaces between letters", usage: ".space hello", permission: "user", async run(ctx) { return ctx.args.join(" ").split("").join(" "); } };

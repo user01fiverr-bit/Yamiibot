@@ -1,0 +1,1 @@
+module.exports = { name: "owner", aliases: ["creator"], category: "general", description: "Contact owner", usage: ".owner", permission: "user", async run(ctx) { return `owner: wa.me/${ctx.config.ownerWa}`; } };

@@ -1,0 +1,1 @@
+module.exports = { name: "color", category: "tools", description: "Random color", usage: ".color", permission: "user", async run() { return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, "0"); } };

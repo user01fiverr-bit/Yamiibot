@@ -1,0 +1,1 @@
+module.exports = { name: "ice", category: "textmaker", description: "Fancy ice text", usage: ".ice <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

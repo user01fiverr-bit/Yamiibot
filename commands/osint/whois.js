@@ -1,0 +1,1 @@
+module.exports = { name: "whois", category: "osint", description: "Domain registry", usage: ".whois google.com", permission: "user", async run(ctx) { try{ const r=await fetch("https://rdap.org/domain/"+ctx.args[0]); const j=await r.json(); return `Domain: ${j.ldhName}\nStatus: ${(j.status||[]).join(", ")}`; }catch(e){ return "lookup failed"; } } };

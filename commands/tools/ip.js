@@ -1,0 +1,1 @@
+module.exports = { name: "ip", category: "tools", description: "IP lookup", usage: ".ip 8.8.8.8", permission: "user", async run(ctx) { try{ const r=await fetch("https://ipapi.co/"+ctx.args[0]+"/json/"); const j=await r.json(); return `IP: ${j.ip}\nCity: ${j.city}\nCountry: ${j.country_name}\nISP: ${j.org}`; }catch(e){ return "lookup failed"; } } };

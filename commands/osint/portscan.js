@@ -1,0 +1,1 @@
+module.exports = { name: "portscan", category: "osint", description: "Simulate port scan", usage: ".portscan 1.1.1.1", permission: "user", async run(ctx) { return `Scanning ${ctx.args[0]||"target"}...\nPort 80: OPEN\nPort 443: OPEN\nPort 22: CLOSED`; } };

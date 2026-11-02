@@ -1,0 +1,1 @@
+module.exports = { name: "uwu", category: "textwizard", description: "UwUify text", usage: ".uwu hello", permission: "user", async run(ctx) { return ctx.args.join(" ").replace(/[rl]/g, "w").replace(/[RL]/g, "W").replace(/n([aeiou])/g, "ny$1").replace(/N([aeiou])/g, "Ny$1") + " uwu"; } };

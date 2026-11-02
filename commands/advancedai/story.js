@@ -1,0 +1,1 @@
+module.exports = { name: "story", category: "advancedai", description: "AI Story", usage: ".story dragon", permission: "user", async run(ctx) { return await ctx.ai.ask("Write a short 3-paragraph story about: " + (ctx.args.join(" ")||"a magical world")); } };

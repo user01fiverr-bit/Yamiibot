@@ -1,0 +1,1 @@
+module.exports = { name: "wave", category: "reactions", description: "Send a wave reaction", usage: ".wave", permission: "user", async run(ctx) { try { const r = await fetch("https://nekos.best/api/v2/wave"); const j = await r.json(); await ctx.send(j.results[0].url); } catch(e) { return "failed"; } } };

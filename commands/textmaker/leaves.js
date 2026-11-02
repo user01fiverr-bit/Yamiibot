@@ -1,0 +1,1 @@
+module.exports = { name: "leaves", category: "textmaker", description: "Fancy leaves text", usage: ".leaves <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

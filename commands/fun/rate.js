@@ -1,0 +1,1 @@
+module.exports = { name: "rate", category: "fun", description: "Rate something", usage: ".rate <thing>", permission: "user", async run(ctx) { return `I rate ${ctx.args.join(" ")} ${1+Math.floor(Math.random()*10)}/10`; } };

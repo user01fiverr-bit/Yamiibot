@@ -1,0 +1,1 @@
+module.exports = { name: "about", category: "general", description: "Bot info", usage: ".about", permission: "user", async run() { return `🤖 *Yamii AI MD*\nDev: Yamii Tech\nVersion: 7.0\nCommands: 260+`; } };

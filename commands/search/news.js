@@ -1,0 +1,1 @@
+module.exports = { name: "news", category: "search", description: "Latest news", usage: ".news", permission: "user", async run() { try{ const r=await fetch("https://feeds.bbci.co.uk/news/rss.xml"); const t=await r.text(); const items=[...t.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)].slice(1,6).map(m=>"• "+m[1]); return items.join("\n"); }catch(e){ return "failed"; } } };

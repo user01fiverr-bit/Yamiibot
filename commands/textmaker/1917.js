@@ -1,0 +1,1 @@
+module.exports = { name: "1917", category: "textmaker", description: "Fancy 1917 text", usage: ".1917 <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

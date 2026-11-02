@@ -1,0 +1,2 @@
+const mod = require("../../lib/moderation");
+module.exports = { name: "antimention", category: "moderation", description: "Toggle antimention", usage: ".antimention on/off", permission: "user", async run(ctx) { if(!ctx.jid.endsWith("@g.us")) return "Group only"; const state = ctx.args[0]?.toLowerCase() === "on"; mod.setGroup(ctx.jid, "antimention", state); return `✅ ${state ? "ON" : "OFF"}: antimention`; } };

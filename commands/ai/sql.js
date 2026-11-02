@@ -1,0 +1,1 @@
+module.exports = { name: "sql", category: "ai", description: "AI generator: sql", usage: ".sql <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .sql <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a sql based on: " + ctx.args.join(" ")); } };

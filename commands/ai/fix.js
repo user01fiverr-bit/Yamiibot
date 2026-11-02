@@ -1,0 +1,1 @@
+module.exports = { name: "fix", category: "ai", description: "AI generator: fix", usage: ".fix <prompt>", permission: "user", async run(ctx) { if(!ctx.args.length) return "usage: .fix <prompt>"; return await ctx.ai.ask("Act as an expert. Generate a fix based on: " + ctx.args.join(" ")); } };

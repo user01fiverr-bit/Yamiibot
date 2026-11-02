@@ -1,0 +1,1 @@
+module.exports = { name: "grammar", category: "advancedai", description: "Fix grammar", usage: ".grammar i is going", permission: "user", async run(ctx) { return await ctx.ai.ask("Fix grammar and spelling: " + ctx.args.join(" ")); } };

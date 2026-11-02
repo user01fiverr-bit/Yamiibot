@@ -1,0 +1,1 @@
+module.exports = { name: "fire", category: "textmaker", description: "Fancy fire text", usage: ".fire <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

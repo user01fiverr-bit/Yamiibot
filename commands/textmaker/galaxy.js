@@ -1,0 +1,1 @@
+module.exports = { name: "galaxy", category: "textmaker", description: "Fancy galaxy text", usage: ".galaxy <text>", permission: "user", async run(ctx) { return "✨ *" + ctx.args.join(" ").toUpperCase() + "* ✨"; } };

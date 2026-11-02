@@ -1,0 +1,1 @@
+module.exports = { name: "slap", category: "reactions", description: "Send a slap reaction", usage: ".slap", permission: "user", async run(ctx) { try { const r = await fetch("https://nekos.best/api/v2/slap"); const j = await r.json(); await ctx.send(j.results[0].url); } catch(e) { return "failed"; } } };
