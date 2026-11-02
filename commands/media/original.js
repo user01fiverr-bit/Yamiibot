@@ -3,7 +3,6 @@ const path = require("path");
 const { exec } = require("child_process");
 const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const ffmpegPath = require('ffmpeg-static');
-const sharp = require('sharp');
 
 module.exports = {
   name: "original",
@@ -26,8 +25,8 @@ module.exports = {
       const buf = await downloadMediaMessage({ key: q.key, message: q.message }, "buffer", {}, { logger: console, reuploadRequest: ctx.sock.updateMediaMessage });
       fs.writeFileSync(tmpIn, buf);
 
-      const metadata = await sharp(buf).metadata();
-      const isAnimated = metadata.pages && metadata.pages > 1;
+      // Read the file header to see if it has animation frames
+      const isAnimated = buf.toString('ascii').includes('ANIM');
 
       if (isAnimated) {
         await new Promise((res, rej) => {
@@ -39,7 +38,12 @@ module.exports = {
         await ctx.sock.sendMessage(ctx.jid, { video: fs.readFileSync(tmpOutVid), caption: "🎥 Original Video" }, { quoted: q });
         fs.unlinkSync(tmpOutVid);
       } else {
-        await sharp(buf).png().toFile(tmpOutImg);
+        await new Promise((res, rej) => {
+            exec(`"${ffmpegPath}" -y -i "${tmpIn}" "${tmpOutImg}"`, (err, stdout, stderr) => {
+                if (err) return rej(new Error(stderr || err.message));
+                res();
+            });
+        });
         await ctx.sock.sendMessage(ctx.jid, { image: fs.readFileSync(tmpOutImg), caption: "🖼️ Original Image" }, { quoted: q });
         fs.unlinkSync(tmpOutImg);
       }
