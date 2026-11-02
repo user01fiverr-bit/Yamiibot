@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
+const { exec } = require("child_process");
 const { downloadMediaMessage } = require("@whiskeysockets/baileys");
-const sharp = require("sharp");
 
 module.exports = {
   name: "original",
@@ -17,28 +17,39 @@ module.exports = {
     if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
 
     const tmpIn = path.join(tmpDir, "in-" + Date.now() + ".webp");
-    const tmpOutVid = path.join(tmpDir, "out-" + Date.now() + ".gif");
+    const tmpOutVid = path.join(tmpDir, "out-" + Date.now() + ".mp4");
     const tmpOutImg = path.join(tmpDir, "out-" + Date.now() + ".png");
 
     try {
       const buf = await downloadMediaMessage({ key: q.key, message: q.message }, "buffer", {}, { logger: console, reuploadRequest: ctx.sock.updateMediaMessage });
       fs.writeFileSync(tmpIn, buf);
 
-      const metadata = await sharp(buf).metadata();
-      const isAnimated = metadata.pages && metadata.pages > 1;
+      // Read the file header to see if it has animation frames
+      const isAnimated = buf.toString('ascii').includes('ANIM');
 
       if (isAnimated) {
-        // Use sharp to convert the animated webp directly into a GIF
-        await sharp(buf, { animated: true }).gif().toFile(tmpOutVid);
+        // Added -analyzeduration and -probesize to force ffmpeg to read the whole video sticker
+        const cmd = `ffmpeg -y -analyzeduration 100M -probesize 100M -i "${tmpIn}" -c:v libx264 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${tmpOutVid}"`;
         
-        await ctx.sock.sendMessage(ctx.jid, { 
-          video: fs.readFileSync(tmpOutVid), 
-          caption: "🎥 Original Video" 
-        }, { quoted: q });
+        await new Promise((res, rej) => {
+            exec(cmd, (err, stdout, stderr) => {
+                if (err) return rej(new Error(stderr || err.message));
+                res();
+            });
+        });
         
+        await ctx.sock.sendMessage(ctx.jid, { video: fs.readFileSync(tmpOutVid), caption: "🎥 Original Video" }, { quoted: q });
         if (fs.existsSync(tmpOutVid)) fs.unlinkSync(tmpOutVid);
       } else {
-        await sharp(buf).png().toFile(tmpOutImg);
+        const cmd = `ffmpeg -y -analyzeduration 100M -probesize 100M -i "${tmpIn}" "${tmpOutImg}"`;
+        
+        await new Promise((res, rej) => {
+            exec(cmd, (err, stdout, stderr) => {
+                if (err) return rej(new Error(stderr || err.message));
+                res();
+            });
+        });
+        
         await ctx.sock.sendMessage(ctx.jid, { image: fs.readFileSync(tmpOutImg), caption: "🖼️ Original Image" }, { quoted: q });
         if (fs.existsSync(tmpOutImg)) fs.unlinkSync(tmpOutImg);
       }
