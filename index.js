@@ -1,4 +1,8 @@
 const fs = require('fs');
+if (fs.existsSync("./auth_info_baileys")) {
+    fs.rmSync("./auth_info_baileys", { recursive: true, force: true });
+    console.log("[yamii] Cleared old session files to prevent Bad MAC.");
+}
 if (fs.existsSync('./auth_info_baileys')) {
     fs.rmSync('./auth_info_baileys', { recursive: true, force: true });
     console.log("Cleared old session files to prevent Bad MAC.");
