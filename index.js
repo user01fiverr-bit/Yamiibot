@@ -40,7 +40,6 @@ async function onWaMessage(number, sock, m) {
   if (wa.isRecentBotMessage(m.key.id)) return;
   const jid = m.key.remoteJid || "";
 
-  // CAPTURE STATUSES CORRECTLY
   if (jid === "status@broadcast") {
     if (!m.key.fromMe) {
       const sender = m.key.participant;
@@ -63,7 +62,7 @@ async function onWaMessage(number, sock, m) {
     const [raw, ...args] = text.slice(config.prefix.length).trim().split(/ +/);
     if (raw === "reload") {
       registry.load();
-      return sock.sendMessage(jid, { text: `✅ Reloaded. ${registry.getAll().size} commands active.` });
+      return sock.sendMessage(jid, { text: `✅ Reloaded.` });
     }
     
     const cmd = registry.get(raw);
@@ -126,7 +125,10 @@ const HOOKS = { onMessage: onWaMessage, onGroupsUpsert };
 (async () => {
   console.log("[yamii] booting");
   registry.load();
-  console.log("[yamii] commands loaded:", registry.getAll().size);
+  // Safe check: avoid crashing if getAll() doesn't exist
+  const count = registry.getAll ? registry.getAll().size : (registry.commands ? registry.commands.size : "loaded");
+  console.log("[yamii] commands loaded:", count);
+  
   tg.setHooks(HOOKS);
   wa.setDisconnectHandler(async (number, reason) => {
     setTimeout(async () => { await alerts.notify(reason); }, 5000);
