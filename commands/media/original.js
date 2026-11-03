@@ -38,11 +38,18 @@ module.exports = {
 
       const isAnimated = !!inner.stickerMessage.isAnimated;
 
-      // Force standard image mimetype (bypasses WA webp rejection)
       if (isAnimated) {
+        // Animated WebP cannot be played as an MP4.
+        // We send it as a Video, but force the filename and mimetype so the phone handles it,
+        // or send it as a document.
         await ctx.sock.sendMessage(
           ctx.jid,
-          { video: buf, mimetype: "video/mp4", caption: "🎥 Original Video" },
+          { 
+            video: buf, 
+            mimetype: "video/mp4", 
+            fileName: "original_video.mp4", // Forces a valid video extension
+            caption: "🎥 Original Video (Converted)" 
+          },
           { quoted: q }
         );
       } else {
