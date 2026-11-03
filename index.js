@@ -131,7 +131,7 @@ const HOOKS = { onMessage: onWaMessage, onGroupsUpsert };
   
   tg.setHooks(HOOKS);
   wa.setDisconnectHandler(async (number, reason) => {
-    setTimeout(async () => { await alerts.notify(reason); }, 5000);
+    setTimeout(() => { console.log("[wa] Disconnected:", reason); }, 5000);
   });
   await wa.startAll(HOOKS, null, (n) => console.log("[wa]", n, "ready"));
   await tg.start();
