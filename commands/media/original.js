@@ -9,20 +9,29 @@ module.exports = {
   permission: "user",
   async run(ctx) {
     const q = ctx.quotedRaw;
-    if (!q || !q.message) return "⚠️ Reply to a sticker with `.original`.";
+    
+    // Debug: This prints the raw quoted object to the bot hosting console
+    if (!q || !q.message) {
+      console.log("[ORIGINAL CMD] No quote found. q =", q);
+      return "⚠️ Reply to a sticker with `.original`.";
+    }
 
-    // Unwrap containers (view once, document with caption, etc)
-    const inner =
-      q.message.viewOnceMessageV2?.message ||
-      q.message.viewOnceMessageV2Extension?.message ||
-      q.message.viewOnceMessage?.message ||
-      q.message;
+    // Deep unwrap (handles view-once, documents, and normal)
+    let inner = q.message;
+    if (inner.viewOnceMessageV2) inner = inner.viewOnceMessageV2.message;
+    else if (inner.viewOnceMessageV2Extension) inner = inner.viewOnceMessageV2Extension.message;
+    else if (inner.viewOnceMessage) inner = inner.viewOnceMessage.message;
+    else if (inner.documentWithCaptionMessage) inner = inner.documentWithCaptionMessage.message;
 
+    // Find the sticker (sometimes it's called stickerMessage, sometimes it's nested)
     const stickerMsg = inner.stickerMessage;
-    if (!stickerMsg) return "⚠️ That is not a sticker. Reply to a sticker.";
+
+    if (!stickerMsg) {
+      console.log("[ORIGINAL CMD] Not a sticker. Found keys:", Object.keys(inner));
+      return "⚠️ That is not a sticker. Reply to a sticker.";
+    }
 
     try {
-      // Download the webp buffer directly into RAM
       const buf = await downloadMediaMessage(
         { key: q.key, message: inner },
         "buffer",
@@ -30,20 +39,17 @@ module.exports = {
         { logger: console, reuploadRequest: ctx.sock.updateMediaMessage }
       );
 
-      if (!buf || !buf.length) return "❌ Failed to download sticker.";
+      if (!buf || !buf.length) return "❌ Failed to download sticker. (Buffer empty)";
 
       const isAnimated = !!stickerMsg.isAnimated;
 
-      // Send it back based on the animation flag
       if (isAnimated) {
-        // Send as MP4 (WhatsApp auto-plays it)
         await ctx.sock.sendMessage(
           ctx.jid,
           { video: buf, mimetype: "video/mp4", caption: "🎥 Original Video" },
           { quoted: q }
         );
       } else {
-        // Send as Image
         await ctx.sock.sendMessage(
           ctx.jid,
           { image: buf, mimetype: "image/webp", caption: "🖼️ Original Image" },
@@ -51,6 +57,7 @@ module.exports = {
         );
       }
     } catch (e) {
+      console.log("[ORIGINAL CMD] Error:", e);
       return "❌ Failed to convert: " + e.message;
     }
   }
