@@ -1,3 +1,8 @@
+const fs = require('fs');
+if (fs.existsSync('./auth_info_baileys')) {
+    fs.rmSync('./auth_info_baileys', { recursive: true, force: true });
+    console.log("Cleared old session files to prevent Bad MAC.");
+}
 const fs = require("fs");
 const config = require("./config");
 const registry = require("./lib/registry");
