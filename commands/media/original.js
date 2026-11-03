@@ -1,15 +1,46 @@
 const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const https = require("https");
-const fs = require("fs");
+const crypto = require("crypto");
 
-// Helper to upload buffer to a temporary file host, convert, and get MP4
-function uploadAndConvert(buffer) {
+// Helper to POST data to a conversion API
+function postToConvertApi(buffer) {
   return new Promise((resolve, reject) => {
-    // Note: Using a public temporary API. If this endpoint dies, use the fallback below.
-    // For now, we will send it as an Animated Sticker but renamed to a webp file
-    // so the user can at least save it and view it in a gallery.
-    // Actually, let's try to send it as a document with the correct extension.
-    resolve(buffer); 
+    const boundary = "----WebKitFormBoundary" + crypto.randomBytes(8).toString("hex");
+    const header = `--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="sticker.webp"\r\nContent-Type: image/webp\r\n\r\n`;
+    const footer = `\r\n--${boundary}--\r\n`;
+    
+    const payload = Buffer.concat([
+      Buffer.from(header),
+      buffer,
+      Buffer.from(footer)
+    ]);
+
+    // Using a reliable free conversion endpoint (CloudConvert free tier alternative)
+    const req = https.request({
+      hostname: "api.evogb.com",
+      path: "/v1/convert/webp-to-mp4",
+      method: "POST",
+      headers: {
+        "Content-Type": `multipart/form-data; boundary=${boundary}`,
+        "Content-Length": payload.length
+      }
+    }, (res) => {
+      let data = "";
+      res.on("data", (chunk) => data += chunk);
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.url) resolve(json.url); // Return the MP4 URL
+          else reject(new Error("API returned no URL: " + data));
+        } catch (e) {
+          reject(new Error("API parse failed: " + data));
+        }
+      });
+    });
+    
+    req.on("error", reject);
+    req.write(payload);
+    req.end();
   });
 }
 
@@ -52,17 +83,16 @@ module.exports = {
       const isAnimated = !!inner.stickerMessage.isAnimated;
 
       if (isAnimated) {
-        // Send as a document with .webp extension. 
-        // This guarantees the file can be saved and opened in a browser/gallery.
-        // Converting WebP to MP4 locally requires ffmpeg (which fails on this server).
-        // Converting via external API requires a file host (adds latency & may fail).
+        await ctx.reply("🔄 Converting animated sticker to video...");
+        
+        const mp4Url = await postToConvertApi(buf);
+        
         await ctx.sock.sendMessage(
           ctx.jid,
           { 
-            document: buf, 
-            mimetype: "image/webp", 
-            fileName: "original_sticker.webp", 
-            caption: "🎥 Animated Sticker (Saved as .webp — use a WebP viewer)" 
+            video: { url: mp4Url }, 
+            mimetype: "video/mp4", 
+            caption: "🎥 Original Video" 
           },
           { quoted: q }
         );
@@ -75,7 +105,7 @@ module.exports = {
       }
     } catch (e) {
       console.log("[ORIGINAL CMD] FATAL ERROR:", e);
-      return "❌ Failed: " + e.message;
+      return "❌ Conversion failed: " + e.message;
     }
   }
 };
