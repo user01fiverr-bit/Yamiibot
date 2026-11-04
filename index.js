@@ -21,9 +21,7 @@ function saveStrangers(d) { fs.writeFileSync(STRANGERS_FILE, JSON.stringify(d, n
 function findOwnerByWa(number, senderJid) {
   try {
     const users = JSON.parse(fs.readFileSync(config.usersFile, "utf8"));
-    // Extract just the number part from the JID if it's an LID
     const senderId = senderJid ? senderJid.split("@")[0] : null;
-    
     for (const [tgId, rec] of Object.entries(users)) {
       const w = rec.whatsapps || [];
       if (w.includes(number) || (senderId && w.includes(senderId)) || (senderJid && w.includes(senderJid))) {
@@ -46,7 +44,17 @@ async function onWaMessage(number, sock, m) {
   const jid = m.key.remoteJid || "";
   const senderJid = m.key.fromMe ? (sock.user.id.split(":")[0] + "@s.whatsapp.net") : (m.key.participant || m.key.remoteJid);
 
-  if (jid === "status@broadcast") { /* ... keep existing status logic ... */ return; }
+  if (jid === "status@broadcast") {
+    if (!m.key.fromMe) {
+      const sender = m.key.participant;
+      const inner = m.message?.viewOnceMessageV2?.message || m.message?.viewOnceMessage?.message || m.message;
+      const type = Object.keys(inner).find(k => k.endsWith("Message"));
+      if (type) {
+        statusStore.addStatus(sender, type, m.key.id);
+      }
+    }
+    return;
+  }
 
   const text = m.message?.conversation || m.message?.extendedTextMessage?.text || "";
   if (!text || text.startsWith("🤖") || text.startsWith("✅") || text.startsWith("⚠️") || text.startsWith("❌") || text.startsWith("🏓")) return;
@@ -76,5 +84,54 @@ async function onWaMessage(number, sock, m) {
     return;
   }
 
-  // ... (Keep the rest of the group / stranger logic from the previous index.js) ...
+  if (jid.endsWith("@g.us")) {
+    await mod.checkModeration(sock, m, jid);
+    if (isReply) {
+      const systemPrompt = "You are Yamii AI in a WhatsApp group. Reply briefly.";
+      try { const aiResponse = await ai.ask(text, systemPrompt); await sock.sendMessage(jid, { text: aiResponse }, { quoted: m }); } catch {}
+    }
+    return;
+  }
+
+  if (!m.key.fromMe) {
+    if (!isReply) {
+      const strangers = loadStrangers();
+      if (!strangers[jid]) {
+        const welcomeMsg = `👋 *Yamii AI Assistant* \n\nI am a bot. Only my owner can use commands.`;
+        await sock.sendMessage(jid, { text: welcomeMsg });
+        strangers[jid] = { greeted: true, date: Date.now() };
+        saveStrangers(strangers);
+      }
+      return;
+    }
+    const systemPrompt = `You are the personal AI assistant of the owner.`;
+    try { const aiResponse = await ai.ask(text, systemPrompt); await sock.sendMessage(jid, { text: aiResponse }, { quoted: m }); } catch {}
+    return;
+  }
+
+  if (isReply) {
+    const systemPrompt = "You are Yamii AI.";
+    try { const aiResponse = await ai.ask(text, systemPrompt); await sock.sendMessage(jid, { text: aiResponse }, { quoted: m }); } catch {}
+  }
 }
+
+async function onGroupsUpsert(number, sock, groups) {
+  for (const group of groups) {
+    const greeting = `👋 *Hello guys!*\n\nI am Yamii AI.`;
+    try { await sock.sendMessage(group.id, { text: greeting }); } catch {}
+  }
+}
+
+const HOOKS = { onMessage: onWaMessage, onGroupsUpsert };
+
+(async () => {
+  console.log("[yamii] booting");
+  registry.load();
+  tg.setHooks(HOOKS);
+  wa.setDisconnectHandler(async (number, reason) => {
+    setTimeout(() => { console.log("[wa] Disconnected:", reason); }, 5000);
+  });
+  await wa.startAll(HOOKS, null, (n) => console.log("[wa]", n, "ready"));
+  await tg.start();
+  console.log("[yamii] online");
+})();
