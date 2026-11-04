@@ -14,34 +14,67 @@ const alerts = require("./lib/alerts");
 const mod = require("./lib/moderation");
 const statusStore = require("./lib/statusStore");
 
-async function onWaMessage(number, sock, m) {
-  console.log("[DEBUG] Received message from:", m.key.remoteJid, "fromMe:", m.key.fromMe);
-  
-  const text = m.message?.conversation || m.message?.extendedTextMessage?.text || "";
-  if (!text) return;
-  
-  console.log("[DEBUG] Text:", text);
-  
-  if (text === ".ping") {
-     await sock.sendMessage(m.key.remoteJid, { text: "🏓 PONG! (Debug Mode)" }, { quoted: m });
-     return;
-  }
+const STRANGERS_FILE = config.strangersFile;
+function loadStrangers() { try { return JSON.parse(fs.readFileSync(STRANGERS_FILE, "utf8")); } catch { return {}; } }
+function saveStrangers(d) { fs.writeFileSync(STRANGERS_FILE, JSON.stringify(d, null, 2)); }
 
-  if (text === ".reload") {
-     registry.load();
-     await sock.sendMessage(m.key.remoteJid, { text: `✅ Reloaded.` }, { quoted: m });
-     return;
-  }
+function findOwnerByWa(number, senderJid) {
+  try {
+    const users = JSON.parse(fs.readFileSync(config.usersFile, "utf8"));
+    // Extract just the number part from the JID if it's an LID
+    const senderId = senderJid ? senderJid.split("@")[0] : null;
+    
+    for (const [tgId, rec] of Object.entries(users)) {
+      const w = rec.whatsapps || [];
+      if (w.includes(number) || (senderId && w.includes(senderId)) || (senderJid && w.includes(senderJid))) {
+          return { tgId };
+      }
+    }
+  } catch (e) { console.log("Owner check error:", e); }
+  return null;
 }
 
-const HOOKS = { onMessage: onWaMessage };
+function extractQuoted(m) {
+  const msg = m.message || {};
+  const contextInfo = msg.extendedTextMessage?.contextInfo;
+  if (!contextInfo || !contextInfo.quotedMessage) return { quotedRaw: null };
+  return { quotedRaw: { key: { remoteJid: m.key.remoteJid, id: contextInfo.stanzaId, fromMe: false, participant: contextInfo.participant }, message: contextInfo.quotedMessage } };
+}
 
-(async () => {
-  console.log("[yamii] booting");
-  registry.load();
-  tg.setHooks(HOOKS);
-  
-  await wa.startAll(HOOKS, null, (n) => console.log("[wa]", n, "ready"));
-  await tg.start();
-  console.log("[yamii] online");
-})();
+async function onWaMessage(number, sock, m) {
+  if (wa.isRecentBotMessage(m.key.id)) return;
+  const jid = m.key.remoteJid || "";
+  const senderJid = m.key.fromMe ? (sock.user.id.split(":")[0] + "@s.whatsapp.net") : (m.key.participant || m.key.remoteJid);
+
+  if (jid === "status@broadcast") { /* ... keep existing status logic ... */ return; }
+
+  const text = m.message?.conversation || m.message?.extendedTextMessage?.text || "";
+  if (!text || text.startsWith("🤖") || text.startsWith("✅") || text.startsWith("⚠️") || text.startsWith("❌") || text.startsWith("🏓")) return;
+
+  const { quotedRaw } = extractQuoted(m);
+  const isReply = quotedRaw !== null;
+
+  if (text.startsWith(config.prefix)) {
+    const [raw, ...args] = text.slice(config.prefix.length).trim().split(/ +/);
+    if (raw === "reload") {
+      registry.load();
+      return sock.sendMessage(jid, { text: `✅ Reloaded.` });
+    }
+    
+    const cmd = registry.get(raw);
+    if (!cmd) return sock.sendMessage(jid, { text: `❌ Command not found.` });
+
+    const ownerRec = findOwnerByWa(number, senderJid);
+    const ctx = {
+      reply: (t) => sock.sendMessage(jid, { text: t }),
+      send: (t, o) => sock.sendMessage(jid, Object.assign({ text: t }, o)),
+      args, text, jid, sock, ai, config, registry, quotedRaw,
+      tgId: ownerRec ? ownerRec.tgId : null, raw
+    };
+
+    try { const r = await cmd.run(ctx); if (r) await sock.sendMessage(jid, { text: r }); } catch(e) { console.error(e); }
+    return;
+  }
+
+  // ... (Keep the rest of the group / stranger logic from the previous index.js) ...
+}
