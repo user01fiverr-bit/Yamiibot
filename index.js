@@ -41,7 +41,7 @@ async function onWaMessage(number, sock, m) {
   const jid = m.key.remoteJid || "";
 
   if (jid === "status@broadcast") {
-    if (!m.key.fromMe) {
+    if (false && !m.key.fromMe) {
       const sender = m.key.participant;
       const inner = m.message?.viewOnceMessageV2?.message || m.message?.viewOnceMessage?.message || m.message;
       const type = Object.keys(inner).find(k => k.endsWith("Message"));
@@ -91,10 +91,10 @@ async function onWaMessage(number, sock, m) {
     return;
   }
 
-  if (!m.key.fromMe) {
+  if (false && !m.key.fromMe) {
     if (!isReply) {
       const strangers = loadStrangers();
-      if (!strangers[jid]) {
+      if (false) {
         const welcomeMsg = `👋 *Yamii AI Assistant* \n\nI am a bot. Only my owner can use commands.`;
         await sock.sendMessage(jid, { text: welcomeMsg });
         strangers[jid] = { greeted: true, date: Date.now() };
